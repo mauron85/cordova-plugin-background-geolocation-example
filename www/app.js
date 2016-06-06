@@ -24,9 +24,9 @@ var bgOptions = {
   notificationIconLarge: 'mappointer_large',
   notificationIconSmall: 'mappointer_small',
   locationProvider: 0,//backgroundGeolocation.provider.ANDROID_DISTANCE_FILTER_PROVIDER,
-  interval: 10000,
-  fastestInterval: 5000,
-  activitiesInterval: 10000,
+  interval: 10,
+  fastestInterval: 5,
+  activitiesInterval: 10,
   stopOnTerminate: true,
   startOnBoot: false,
   startForeground: true,
@@ -72,7 +72,7 @@ myApp.onPageInit('map', function (page) {
   renderTabBar(isStarted);
 
   if (typeof google !== 'undefined') {
-    map = new google.maps.Map(Dom7('#mapcanvas')[0], mapOptions);    
+    map = new google.maps.Map(Dom7('#mapcanvas')[0], mapOptions);
   }
 
   if (typeof backgroundGeolocation === 'undefined') {
@@ -103,7 +103,7 @@ myApp.onPageInit('map', function (page) {
     }
     toggleTracking(isStarted);
   });
-  
+
 });
 
 myApp.onPageInit('settings', function (page) {
@@ -130,11 +130,7 @@ myApp.onPageInit('settings', function (page) {
         if (el.type === 'checkbox') {
           values[el.name] = el.checked;
         } else {
-          if (['interval', 'fastestInterval', 'activitiesInterval'].indexOf(el.name) > -1) {
-            values[el.name] = el.value * 1000;
-          } else {
-            values[el.name] = el.value;
-          }
+          values[el.name] = el.value;
         }
         return values;
       }, {});
@@ -161,19 +157,25 @@ function toggleTracking(isStarted) {
 
 function bgConfigure(config) {
   Object.assign(bgOptions, config);
+  var options = Object.assign({}, bgOptions);
+
+  if (options.interval) { options.interval *= 1000; }
+  if (options.fastestInterval) { options.fastestInterval *= 1000; }
+  if (options.activitiesInterval) { options.activitiesInterval *= 1000; }
+
   if (isStarted) {
     stopTracking();
     backgroundGeolocation.configure(
       setCurrentLocation,
       function (err) { console.log('Error occured', err); },
-      bgOptions
+      options
     );
     startTracking();
   } else {
     backgroundGeolocation.configure(
       setCurrentLocation,
       function (err) { console.log('Error occured', err); },
-      bgOptions
+      options
     );
   }
 }
