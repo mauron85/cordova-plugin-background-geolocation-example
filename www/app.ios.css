@@ -1,0 +1,63 @@
+.list-block .item-title.label {
+  font-size: 12px; 
+}
+
+.list-block .item-input {
+  text-align: right;
+}
+
+.app-tabbar {
+    height: 56px;
+    padding: 12px;
+}
+
+.app-tabbar-inner {
+    position: relative;
+}
+
+.btn-tracking {
+    /*position: absolute;*/
+}
+
+.btn-settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+i.icon-start {
+    display: block;
+    margin: 0 auto;
+    width: 35px;
+    height: 35px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350" width="512" height="512"><path d="M175 0C78.343 0 0 78.343 0 175c0 96.656 78.343 175 175 175 96.656 0 175-78.344 175-175C350 78.343 271.656 0 175 0zm83.738 189.05l-104.386 71.812c-2.904 1.99-6.284 3.006-9.673 3.006-2.73 0-5.437-.648-7.93-1.95-5.606-2.966-9.126-8.778-9.126-15.104V103.188c0-6.326 3.52-12.14 9.125-15.104 5.604-2.94 12.376-2.535 17.602 1.055l104.386 71.81c4.62 3.18 7.387 8.44 7.387 14.05 0 5.61-2.767 10.87-7.387 14.05z" fill="#006DF0"/></svg>');
+}
+
+i.icon-stop {
+    display: block;
+    margin: 0 auto;
+    width: 35px;
+    height: 35px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 408.221 408.221"><path d="M408.22 204.11C408.22 91.39 316.84 0 204.11 0 91.388 0 0 91.388 0 204.11c0 112.726 91.388 204.11 204.11 204.11 112.73 0 204.11-91.384 204.11-204.11zm-112.54 61.414c0 16.647-13.51 30.152-30.147 30.152H142.707c-16.65 0-30.156-13.505-30.156-30.152V142.69c0-16.65 13.506-30.147 30.157-30.147h122.826c16.654 0 30.147 13.497 30.147 30.146v122.834z" fill="#006DF0"/></svg>');
+}
+
+i.icon-settings {
+    display: block;
+    width: 35px;
+    height: 35px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><path fill="#007aff" d="M32 376h283.35c6.186-14.112 20.28-24 36.65-24s30.465 9.888 36.65 24H480v32h-91.35c-6.186 14.112-20.28 24-36.65 24s-30.465-9.888-36.65-24H32M32 240h91.35c6.186-14.112 20.28-24 36.65-24s30.465 9.888 36.65 24H480v32H196.65c-6.186 14.112-20.28 24-36.65 24s-30.465-9.888-36.65-24H32M32 104h283.35c6.186-14.112 20.28-24 36.65-24s30.465 9.888 36.65 24H480v32h-91.35c-6.186 14.112-20.28 24-36.65 24s-30.465-9.888-36.65-24H32"/></svg>');
+}
+
+.credits {
+    position: absolute;
+    bottom: 60px  ;
+    left: 5px;
+    background: #fff;
+    font-size: 10px;
+    color: #000;
+    z-index: 500;
+}
+
+.credits a {
+    font-weight: bolder;
+}

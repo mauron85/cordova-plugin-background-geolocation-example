@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.marianhello.bgexampleapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>BG Example</name>
+    <description>
+        A minimal example of Cordova BackgroundGeolocation plugin.
+    </description>
+    <author>
+        mauron85
+    </author>
+    <plugin name="cordova-plugin-whitelist" version="1" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <hook type="after_platform_add" src="scripts/install_plugins.js"/>
+    <platform name="android">
+        <content src="index.android.html" />
+        <allow-intent href="market:*" />
+        <hook type="after_prepare" src="scripts/res_android.js"/>
+    </platform>
+    <platform name="ios">
+        <content src="index.ios.html" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <hook type="after_prepare" src="scripts/res_ios.js"/>
+        <hook type="after_platform_add" src="scripts/install_ios.js"/>
+    </platform>
+</widget>
