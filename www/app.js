@@ -274,6 +274,8 @@ function setCurrentLocation (location) {
     // Add breadcrumb to current Polyline path.
     path.getPath().push(latlng);
     previousLocation = location;
+
+    backgroundGeoLocation.finish();
 }
 
 function onDeviceReady() {
