@@ -8,20 +8,21 @@
 // configure all the files to copy.  Key of object is the source file, value is the destination location.  It's fine to put all platforms' icons and splash screen files here, even if we don't build for all platforms on each developer's box.
 var filestocopy = [
 // ios
-{ "res/icon/ios/Icon-40.png": "platforms/ios/BG Example/Resources/icons/icon-40.png" },
-{ "res/icon/ios/Icon-40@2x.png": "platforms/ios/BG Example/Resources/icons/icon-40@2x.png" },
-{ "res/icon/ios/Icon-60.png": "platforms/ios/BG Example/Resources/icons/icon-60.png" },
-{ "res/icon/ios/Icon-60@2x.png": "platforms/ios/BG Example/Resources/icons/icon-60@2x.png" },
-{ "res/icon/ios/Icon-72.png": "platforms/ios/BG Example/Resources/icons/icon-72.png" },
-{ "res/icon/ios/Icon-72@2x.png": "platforms/ios/BG Example/Resources/icons/icon-72@2x.png" },
-{ "res/icon/ios/Icon-76.png": "platforms/ios/BG Example/Resources/icons/icon-76.png" },
-{ "res/icon/ios/Icon-76@2x.png": "platforms/ios/BG Example/Resources/icons/icon-76@2x.png" },
-{ "res/icon/ios/Icon-Small-50.png": "platforms/ios/BG Example/Resources/icons/icon-50.png" },
-{ "res/icon/ios/Icon-Small-50@2x.png": "platforms/ios/BG Example/Resources/icons/icon-50@2x.png" },
-{ "res/icon/ios/Icon-Small.png": "platforms/ios/BG Example/Resources/icons/icon-Small.png" },
-{ "res/icon/ios/Icon-Small@2x.png": "platforms/ios/BG Example/Resources/icons/icon-Small@2x.png" },
-{ "res/icon/ios/Icon.png": "platforms/ios/BG Example/Resources/icons/icon.png" },
-{ "res/icon/ios/Icon@2x.png": "platforms/ios/BG Example/Resources/icons/icon@2x.png" }
+{ "res/icons/ios/icon-2x.png": "platforms/ios/BG Example/Resources/icons/icon@2x.png" },
+{ "res/icons/ios/icon-40-2x.png": "platforms/ios/BG Example/Resources/icons/icon-40@2x.png" },
+{ "res/icons/ios/icon-40.png": "platforms/ios/BG Example/Resources/icons/icon-40.png" },
+{ "res/icons/ios/icon-50.png": "platforms/ios/BG Example/Resources/icons/icon-50.png" },
+{ "res/icons/ios/icon-50-2x.png": "platforms/ios/BG Example/Resources/icons/icon-50@2x.png" },
+{ "res/icons/ios/icon-60.png": "platforms/ios/BG Example/Resources/icons/icon-60.png" },
+{ "res/icons/ios/icon-60-2x.png": "platforms/ios/BG Example/Resources/icons/icon-60@2x.png" },
+{ "res/icons/ios/icon-60-3x.png": "platforms/ios/BG Example/Resources/icons/icon-60@3x.png" },
+{ "res/icons/ios/icon-72.png": "platforms/ios/BG Example/Resources/icons/icon-72.png" },
+{ "res/icons/ios/icon-72-2x.png": "platforms/ios/BG Example/Resources/icons/icon-72@2x.png" },
+{ "res/icons/ios/icon-76.png": "platforms/ios/BG Example/Resources/icons/icon-76.png" },
+{ "res/icons/ios/icon-76-2x.png": "platforms/ios/BG Example/Resources/icons/icon-76@2x.png" },
+{ "res/icons/ios/icon-small.png": "platforms/ios/BG Example/Resources/icons/icon-Small.png" },
+{ "res/icons/ios/icon-small-2x.png": "platforms/ios/BG Example/Resources/icons/icon-Small@2x.png" },
+{ "res/icons/ios/icon.png": "platforms/ios/BG Example/Resources/icons/icon.png" }
 ];
 
 var fs = require('fs');
