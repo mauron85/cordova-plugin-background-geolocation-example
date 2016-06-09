@@ -165,6 +165,19 @@
             <li>
               <div class="item-content">
                 <div class="item-inner">
+                  <div class="item-title label">stopOnTerminate</div>
+                  <div class="item-input">
+                    <label class="label-switch">
+                      <input data-type="config" name="stopOnTerminate" type="checkbox" {{#if stopOnTerminate}}checked{{/if}}>
+                      <div class="checkbox"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
                   <div class="item-title label">url</div>
                   <div class="item-input">
                     <input data-type="config" name="url" type="text" placeholder="http://" value="{{url}}"">

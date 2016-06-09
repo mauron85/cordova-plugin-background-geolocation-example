@@ -27,12 +27,12 @@ var bgOptions = {
   interval: 10,
   fastestInterval: 5,
   activitiesInterval: 10,
-  stopOnTerminate: true,
+  stopOnTerminate: false,
   startOnBoot: false,
   startForeground: true,
   stopOnStillActivity: true,
   activityType: 'AutomotiveNavigation',
-  url: 'http://192.168.81.15:3000/location',
+  url: 'http://192.168.81.15:3000/locations',
   httpHeaders: {
     'X-FOO': 'bar'
   }
