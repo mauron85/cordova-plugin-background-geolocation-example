@@ -229,6 +229,7 @@ function renderTabBar(isStarted) {
 }
 
 function setStationary (location) {
+  console.log('[DEBUG] stationary recieved', location);
   var latlng = new google.maps.LatLng(Number(location.latitude), Number(location.longitude));
   var stationaryCircle = new google.maps.Circle({
       fillColor: 'pink',
@@ -243,15 +244,17 @@ function setStationary (location) {
 }
 
 function setCurrentLocation (location) {
+    console.log('[DEBUG] location recieved', location);
     if (!currentLocationMarker) {
         currentLocationMarker = new google.maps.Marker({
             map: map,
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 3,
-                fillColor: 'yellow',
-                strokeColor: 'yellow',
-                strokeWeight: 5
+                scale: 7,
+                fillColor: 'gold',
+                fillOpacity: 1,
+                strokeColor: 'white',
+                strokeWeight: 3
             }
         });
         locationAccuracyCircle = new google.maps.Circle({
@@ -275,10 +278,11 @@ function setCurrentLocation (location) {
         locationMarkers.push(new google.maps.Marker({
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 3,
+                scale: 7,
                 fillColor: 'green',
-                strokeColor: 'green',
-                strokeWeight: 5
+                fillOpacity: 1,
+                strokeColor: 'white',
+                strokeWeight: 3
             },
             map: map,
             position: new google.maps.LatLng(previousLocation.latitude, previousLocation.longitude)
