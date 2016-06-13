@@ -5,6 +5,7 @@ var
   map,
   previousLocation,
   locationMarkers = [],
+  stationaryCircles = [],
   currentLocationMarker,
   locationAccuracyCircle,
   path,
@@ -81,6 +82,7 @@ myApp.onPageInit('map', function (page) {
   }
 
   bgConfigure();
+  backgroundGeolocation.onStationary(setStationary);
   backgroundGeolocation.watchLocationMode(
     function (enabled) {
       isLocationEnabled = enabled;
@@ -184,9 +186,15 @@ function startTracking() {
   if (isStarted) { return; }
 
   if (!window.isAndroid) {
-    backgroundGeolocation.start();
-    isStarted = true;
-    renderTabBar(isStarted);
+    backgroundGeolocation.start(
+      function () {
+        isStarted = true;
+        renderTabBar(isStarted);
+      },
+      function (err) {
+        myApp.alert(err, 'Service start failed');
+      }
+    );
     return;
   }
 
@@ -220,6 +228,20 @@ function renderTabBar(isStarted) {
   $$('#tabbar').html(Template7.templates.tabbarTemplate({isStarted: isStarted}));
 }
 
+function setStationary (location) {
+  var latlng = new google.maps.LatLng(Number(location.latitude), Number(location.longitude));
+  var stationaryCircle = new google.maps.Circle({
+      fillColor: 'pink',
+      fillOpacity: 0.4,
+      strokeOpacity: 0,
+      map: map,
+  });
+  stationaryCircle.setCenter(latlng);
+  stationaryCircle.setRadius(location.radius);
+  stationaryCircles.push(stationaryCircle);
+  backgroundGeoLocation.finish();
+}
+
 function setCurrentLocation (location) {
     if (!currentLocationMarker) {
         currentLocationMarker = new google.maps.Marker({
@@ -227,13 +249,13 @@ function setCurrentLocation (location) {
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 3,
-                fillColor: 'blue',
-                strokeColor: 'blue',
+                fillColor: 'yellow',
+                strokeColor: 'yellow',
                 strokeWeight: 5
             }
         });
         locationAccuracyCircle = new google.maps.Circle({
-            fillColor: '#3366cc',
+            fillColor: 'purple',
             fillOpacity: 0.4,
             strokeOpacity: 0,
             map: map
@@ -242,7 +264,7 @@ function setCurrentLocation (location) {
     if (!path) {
         path = new google.maps.Polyline({
             map: map,
-            strokeColor: '#3366cc',
+            strokeColor: 'blue',
             fillOpacity: 0.4
         });
     }
