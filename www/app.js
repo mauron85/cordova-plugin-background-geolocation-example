@@ -1,7 +1,4 @@
-'use strict';
-
 var
-  backgroundGeolocation,
   map,
   previousLocation,
   locationMarkers = [],
@@ -36,7 +33,8 @@ var bgOptions = {
   url: 'http://192.168.81.15:3000/locations',
   httpHeaders: {
     'X-FOO': 'bar'
-  }
+  },
+  saveBatteryOnBackground: false
 };
 
 var mapOptions = {
@@ -307,7 +305,7 @@ function setCurrentLocation (location) {
 }
 
 function onDeviceReady() {
-  backgroundGeolocation = backgroundGeolocation || backgroundGeoLocation;
+  backgroundGeolocation = window.backgroundGeolocation || window.backgroundGeoLocation || window.universalGeolocation;
   myApp.init();
 }
 
