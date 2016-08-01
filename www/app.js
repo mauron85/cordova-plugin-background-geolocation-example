@@ -6,7 +6,7 @@ var
   currentLocationMarker,
   locationAccuracyCircle,
   path,
-  userStartIntent = false,
+  userStartIntent,
   isStarted = false,
   isLocationEnabled = false,
   configHasChanges = false;
@@ -31,10 +31,13 @@ var bgOptions = {
   stopOnStillActivity: true,
   activityType: 'AutomotiveNavigation',
   url: 'http://192.168.81.15:3000/locations',
+  syncUrl: 'http://192.168.81.15:3000/sync',
+  syncThreshold: 100,
   httpHeaders: {
     'X-FOO': 'bar'
   },
-  saveBatteryOnBackground: false
+  saveBatteryOnBackground: false,
+  maxLocations: 100
 };
 
 var mapOptions = {
@@ -84,24 +87,21 @@ myApp.onPageInit('map', function (page) {
   backgroundGeolocation.watchLocationMode(
     function (enabled) {
       isLocationEnabled = enabled;
-      if (enabled) {
-        if (userStartIntent && !isStarted) {
-          startTracking();
-        }
-      } else {
+      if (enabled && userStartIntent) {
+        startTracking();
+      } else if (isStarted) {
         stopTracking();
+        myApp.alert('Location tracking has been stopped');
       }
     },
     function (error) {
-      myApp.alert(error, 'Error while watching location mode');
+      myApp.alert(error, 'Error watching location mode');
     }
   );
 
   $$('#tabbar').on('click', '[data-action="tracking"]', function() {
-    if (isLocationEnabled) {
-      userStartIntent = !isStarted;
-    }
-    toggleTracking(isStarted);
+    userStartIntent = !(isStarted & userStartIntent);
+    toggleTracking(userStartIntent);
   });
 
 });
@@ -134,7 +134,6 @@ myApp.onPageInit('settings', function (page) {
         }
         return values;
       }, {});
-      localStorage.setItem('bgOptions', JSON.stringify(config));
       bgConfigure(config);
       configHasChanges = false;
     // }
@@ -147,22 +146,23 @@ $$('[data-page="settings"]').on('keyup keydown change', '[data-type="config"]', 
   configHasChanges = true;
 });
 
-function toggleTracking(isStarted) {
-  if (isStarted) {
-    stopTracking();
-  } else {
+function toggleTracking(shouldStart) {
+  if (shouldStart) {
     startTracking();
+  } else {
+    stopTracking();
   }
 }
 
 function bgConfigure(config) {
   Object.assign(bgOptions, config);
-  var options = Object.assign({}, bgOptions);
+  localStorage.setItem('bgOptions', JSON.stringify(bgOptions));
 
+  var options = Object.assign({}, bgOptions);
   if (options.interval) { options.interval *= 1000; }
   if (options.fastestInterval) { options.fastestInterval *= 1000; }
   if (options.activitiesInterval) { options.activitiesInterval *= 1000; }
-
+  
   if (isStarted) {
     stopTracking();
     backgroundGeolocation.configure(
@@ -183,24 +183,23 @@ function bgConfigure(config) {
 function startTracking() {
   if (isStarted) { return; }
 
-  if (!window.isAndroid) {
-    backgroundGeolocation.start(
-      function () {
-        isStarted = true;
-        renderTabBar(isStarted);
-      },
-      function (err) {
-        myApp.alert(err, 'Service start failed');
-      }
-    );
-    return;
-  }
-
   backgroundGeolocation.isLocationEnabled(
     function (enabled) {
       isLocationEnabled = enabled;
       if (enabled) {
-        backgroundGeolocation.start();
+        backgroundGeolocation.start(
+          null,
+          function (error) {
+            stopTracking();
+            if (error.code === 2) {
+              myApp.confirm('Would you like to open app settings?', 'Permission denied', function() {
+                backgroundGeolocation.showAppSettings();
+              });
+            } else {
+              myApp.alert(error.message, 'Start failed');  
+            }
+          }
+        );
         isStarted = true;
         renderTabBar(isStarted);
       } else {
@@ -217,6 +216,8 @@ function startTracking() {
 
 function stopTracking() {
   if (!isStarted) { return; }
+  // userStartIntent = false;
+
   backgroundGeolocation.stop();
   isStarted = false;
   renderTabBar(isStarted);
@@ -306,6 +307,15 @@ function setCurrentLocation (location) {
 
 function onDeviceReady() {
   backgroundGeolocation = window.backgroundGeolocation || window.backgroundGeoLocation || window.universalGeolocation;
+  backgroundGeolocation.getLocations(function(locs) {
+    var now = Date.now();
+    var sameDayDiffInMillis = 24 * 3600 * 1000;
+    locs.forEach(function (loc) {
+      if ((now - loc.time) <= sameDayDiffInMillis) {
+        setCurrentLocation(loc);
+      }
+    });
+  });
   myApp.init();
 }
 

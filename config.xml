@@ -8,6 +8,9 @@
         mauron85
     </author>
     <plugin name="cordova-plugin-whitelist" version="1" />
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.2.0-alpha.1">
+        <!-- <variable name="ALWAYS_USAGE_DESCRIPTION" value="Background tracking is required" /> -->
+    </plugin>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -15,7 +18,6 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <hook type="after_platform_add" src="scripts/install_plugins.js"/>
     <platform name="android">
         <content src="index.android.html" />
         <allow-intent href="market:*" />
@@ -26,6 +28,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <hook type="after_prepare" src="scripts/res_ios.js"/>
-        <hook type="after_platform_add" src="scripts/install_ios.js"/>
     </platform>
 </widget>
