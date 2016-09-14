@@ -36,6 +36,7 @@ var bgOptions = {
   httpHeaders: {
     'X-FOO': 'bar'
   },
+  pauseLocationUpdates: false,
   saveBatteryOnBackground: false,
   maxLocations: 100
 };
@@ -162,7 +163,7 @@ function bgConfigure(config) {
   if (options.interval) { options.interval *= 1000; }
   if (options.fastestInterval) { options.fastestInterval *= 1000; }
   if (options.activitiesInterval) { options.activitiesInterval *= 1000; }
-  
+
   if (isStarted) {
     stopTracking();
     backgroundGeolocation.configure(
@@ -196,7 +197,7 @@ function startTracking() {
                 backgroundGeolocation.showAppSettings();
               });
             } else {
-              myApp.alert(error.message, 'Start failed');  
+              myApp.alert(error.message, 'Start failed');
             }
           }
         );
