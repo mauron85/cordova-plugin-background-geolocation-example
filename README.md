@@ -8,6 +8,13 @@ Example Background Geolocation app.
 
 Example app shows some possibilities of [cordova-background-geolocation](https://github.com/mauron85/cordova-plugin-background-geolocation) plugin.
 
+## Compatibility
+
+| Name                       | Version |
+|----------------------------|---------|
+| Cordova CLI                | 7.1.0   |
+| Cordova-Android            | 6.3.0   |
+
 ## How to build
 
 Replace platform with one of supported platforms: android, ios. In this example we will build for Android.
