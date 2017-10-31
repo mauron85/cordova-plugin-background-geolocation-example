@@ -8,7 +8,7 @@
         mauron85
     </author>
     <plugin name="cordova-plugin-whitelist" version="1" />
-    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="^2.2.0">
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="^2.3.0">
         <variable name="ALWAYS_USAGE_DESCRIPTION" value="Tracking permission is required for app to work" />
     </plugin>
     <access origin="*" />
