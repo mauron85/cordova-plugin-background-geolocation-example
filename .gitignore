@@ -3,9 +3,13 @@
 !/res
 !/scripts
 !/www
+!/src
+!.babelrc
 !.gitignore
 !*.png
 !contributors.txt
 !config.xml
+!package.json
 !README.md
+!webpack.config.js
 /**/.DS_Store

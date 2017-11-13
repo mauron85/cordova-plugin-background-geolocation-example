@@ -69,7 +69,27 @@ $ cordova emulate android
 
 You can use cordova run android --list to see all available targets and cordova run android --target=target_name to run application on a specific device or emulator (for example, cordova run android --target="Nexus4_emulator").
 
-## Development
+## App Development
+
+Cordova Example App is sharing code with [react-native variant](https://github.com/mauron85/react-native-background-geolocation-example). Native libraries are aliased to use their web variants.
+That is possible thanks to amazing [webpack](https://webpack.github.io/), [native-base-web](https://github.com/Chion82/native-base-web), [react-native-web](https://github.com/necolas/react-native-web) projects.
+
+Install and build app:
+
+```
+npm install
+npm run build
+```
+
+App will be built into `www` folder.
+
+For development install and use webpack-dev-server:
+
+```
+webpack-dev-server --content-base src/
+```
+
+## Plugin development
 
 All plugins will be installed from npm at their latest version. However if you want to install your local version on cordova-plugin-background-geolocation, you can do that:
 
