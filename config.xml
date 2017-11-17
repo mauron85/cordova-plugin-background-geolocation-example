@@ -15,7 +15,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
-        <content src="index.android.html" />
+        <content src="index.html" />
         <allow-intent href="market:*" />
         <hook src="scripts/res_android.js" type="after_prepare" />
         <icon density="ldpi" src="res/android/icon-36-ldpi.png" />
@@ -26,7 +26,7 @@
         <icon density="xxxhdpi" src="res/android/icon-192-xxxhdpi.png" />
     </platform>
     <platform name="ios">
-        <content src="index.ios.html" />
+        <content src="index.html" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="180" src="res/ios/icon-60-3x.png" width="180" />
