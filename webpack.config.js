@@ -1,6 +1,7 @@
 const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const config = {
   devtool: 'source-map',
@@ -30,7 +31,7 @@ const config = {
         'native-base-web/src/Components/Widgets/Icon',
       'react-native-maps': path.resolve(
         __dirname,
-        'src/components/react-google-maps'
+        'src', 'components', 'react-google-maps'
       )
     }
   },
@@ -42,7 +43,8 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
-    })
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
   module: {
     rules: [
@@ -93,13 +95,16 @@ const config = {
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false
+    }),
     new webpack.optimize.UglifyJsPlugin({
+      parallel: true,
       sourceMap: true,
-      compressor: {
-        warnings: false
-      },
       compress: {
-        screw_ie8: true
+        drop_console: true,
+        warnings: false
       }
     })
   );

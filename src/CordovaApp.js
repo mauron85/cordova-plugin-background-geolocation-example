@@ -5,14 +5,10 @@ import { OSTheme } from 'native-base';
 import RootNavigator from './BrowserNavigator';
 import BrowserAppContainer from './BrowserAppContainer';
 
-function run() {
-  const App = BrowserAppContainer(RootNavigator);
-  OSTheme.setOSTheme('ios');
-  
-  AppRegistry.registerComponent('App', () => App);
-  AppRegistry.runApplication('App', {
-    rootTag: document.getElementById('root')
-  });  
-}
+const App = BrowserAppContainer(RootNavigator);
+OSTheme.setOSTheme('ios');
 
-document.addEventListener('deviceready', run, false);
+AppRegistry.registerComponent('App', () => App);
+AppRegistry.runApplication('App', {
+  rootTag: document.getElementById('root')
+});  

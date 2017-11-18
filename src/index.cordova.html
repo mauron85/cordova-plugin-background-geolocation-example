@@ -11,6 +11,13 @@
 <body>
     <div id="root"></div>
     <script src="cordova.js"></script>
-    <script src="app.js"></script>
+    <script>
+        function run() {
+            var script = document.createElement('script');
+            script.src = 'app.js'
+            document['body'].appendChild(script);
+        }
+        document.addEventListener('deviceready', run, false);        
+    </script>
 </body>
 </html>
