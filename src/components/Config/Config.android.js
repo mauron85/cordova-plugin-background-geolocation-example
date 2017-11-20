@@ -21,6 +21,7 @@ import { i18n } from '../../i18n';
 
 class ConfigScene extends Component {
   static defaultProps = {
+    renderCommon: true,
     interval: 0,
     fastestInterval: 0,
     activitiesInterval: 0,
@@ -46,6 +47,7 @@ class ConfigScene extends Component {
 
   render() {
     const {
+      renderCommon,
       interval,
       fastestInterval,
       activitiesInterval,
@@ -57,7 +59,7 @@ class ConfigScene extends Component {
     } = this.props;
     return (
       <View>
-        <CommonConfig {...this.props} />
+        { renderCommon ? <CommonConfig {...this.props} /> : null }
         <List style={{ flex: 1, backgroundColor: '#fff' }}>
           <ListItem itemDivider>
             <Text>Android</Text>

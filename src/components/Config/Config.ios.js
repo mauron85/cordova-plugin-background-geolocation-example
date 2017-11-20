@@ -36,6 +36,7 @@ export const activities = [
 
 class Config extends Component {
   static defaultProps = {
+    renderCommon: true,
     activityType: 0,
     pauseLocationUpdates: false,
     saveBatteryOnBackground: false
@@ -57,6 +58,7 @@ class Config extends Component {
 
   render() {
     const {
+      renderCommon,
       activityType,
       pauseLocationUpdates,
       saveBatteryOnBackground
@@ -68,7 +70,7 @@ class Config extends Component {
     
     return (
       <View>
-        <CommonConfig {...this.props} />
+        { renderCommon ? <CommonConfig {...this.props} /> : null }
         <List style={{ flex: 1, backgroundColor: '#fff' }}>
           <ListItem itemDivider>
             <Text>iOS</Text>
