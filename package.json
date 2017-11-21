@@ -1,19 +1,7 @@
 {
   "name": "com.marianhello.bgexampleapp",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "displayName": "BG Example",
-  "cordova": {
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "plugins": {
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-mauron85-background-geolocation": {
-        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking"
-      }
-    }
-  },
   "scripts": {
     "clean": "rimraf www",
     "copy": "cp-cli src/index.cordova.html www/index.html",
@@ -22,9 +10,10 @@
   },
   "dependencies": {
     "babel-preset-react-native": "^4.0.0",
-    "cordova-android": "~6.3.0",
+    "cordova-android": "^6.4.0",
     "cordova-ios": "^4.5.3",
-    "cordova-plugin-mauron85-background-geolocation": "git+https://github.com/mauron85/cordova-plugin-background-geolocation.git#ios",
+    "cordova-plugin-device": "^1.1.7",
+    "cordova-plugin-mauron85-background-geolocation": "^3.0.0-alpha.5",
     "cordova-plugin-whitelist": "^1.3.3"
   },
   "devDependencies": {
@@ -51,5 +40,23 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.1"
+  },
+  "cordova": {
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-mauron85-background-geolocation": {
+        "ICON": "@mipmap/icon",
+        "SMALL_ICON": "@mipmap/icon",
+        "ACCOUNT_NAME": "@string/app_name",
+        "ACCOUNT_LABEL": "@string/app_name",
+        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
+        "CONTENT_AUTHORITY": "$PACKAGE_NAME"
+      }
+    }
   }
 }

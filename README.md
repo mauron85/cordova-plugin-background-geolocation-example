@@ -17,6 +17,16 @@ Example app shows some possibilities of [cordova-background-geolocation](https:/
 
 ## How to build
 
+Build app
+
+```
+npm install
+npm run build
+```
+
+App will be built into `www` folder.
+
+
 Replace platform with one of supported platforms: android, ios. In this example we will build for Android.
 
 ```
@@ -74,14 +84,6 @@ You can use cordova run android --list to see all available targets and cordova 
 Cordova Example App is sharing code with [react-native variant](https://github.com/mauron85/react-native-background-geolocation-example). Native libraries are aliased to use their web variants.
 That is possible thanks to amazing [webpack](https://webpack.github.io/), [native-base-web](https://github.com/Chion82/native-base-web), [react-native-web](https://github.com/necolas/react-native-web) projects.
 
-Install and build app:
-
-```
-npm install
-npm run build
-```
-
-App will be built into `www` folder.
 
 For development install and use webpack-dev-server:
 
