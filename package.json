@@ -11,9 +11,9 @@
   "dependencies": {
     "babel-preset-react-native": "^4.0.0",
     "cordova-android": "^6.4.0",
-    "cordova-ios": "^4.5.3",
+    "cordova-ios": "^4.5.4",
     "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-mauron85-background-geolocation": "^3.0.0-alpha.5",
+    "cordova-plugin-mauron85-background-geolocation": "^3.0.0-alpha.7",
     "cordova-plugin-whitelist": "^1.3.3"
   },
   "devDependencies": {
@@ -48,15 +48,7 @@
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-device": {},
-      "cordova-plugin-mauron85-background-geolocation": {
-        "ICON": "@mipmap/icon",
-        "SMALL_ICON": "@mipmap/icon",
-        "ACCOUNT_NAME": "@string/app_name",
-        "ACCOUNT_LABEL": "@string/app_name",
-        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-        "CONTENT_AUTHORITY": "$PACKAGE_NAME"
-      }
+      "cordova-plugin-device": {}
     }
   }
 }
