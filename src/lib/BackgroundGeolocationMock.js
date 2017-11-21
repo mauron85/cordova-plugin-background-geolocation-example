@@ -13,6 +13,10 @@
 // var channel = require("cordova/channel");
 // var radio = require('./radio');
 
+var device = {
+  platform: 'ios'
+};
+
 
 var INITIAL_TIME_IN_MILLIS = 1510742914366;
 var LOCATION_UPDATE_INTERVAL_IN_MILLIS = 3000;
