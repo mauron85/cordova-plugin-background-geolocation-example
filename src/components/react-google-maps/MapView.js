@@ -4,12 +4,12 @@ import Map from './Map';
 
 const defaultRegion = { latitude: -34.397, longitude: 150.644 };
 
-const MapView = ({ region, children }) => (
+const MapView = ({ region, style, children }) => (
   <Map
     region={region || defaultRegion}
     googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
     loadingElement={<div style={{ height: '100%' }} />}
-    containerElement={<div style={{ height: '400px' }} />}
+    containerElement={<div style={style} />}
     mapElement={<div style={{ height: '100%' }} />}
   >
     {children}
@@ -24,7 +24,8 @@ Map.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ])
+  ]),
+  style: PropTypes.object
 };
 
 Map.defaultProps = {

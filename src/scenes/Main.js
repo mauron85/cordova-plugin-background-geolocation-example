@@ -222,7 +222,7 @@ class MainScene extends PureComponent {
     return (
       <Container>
         <Content>
-          <MapView style={{ width, height }} region={region}>
+          <MapView style={{ width, height: height - 55 }} region={region}>
             {locations.map((location, idx) => (
               <MapView.Marker
                 key={idx}
