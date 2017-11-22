@@ -39,7 +39,9 @@ const LogItem = ({
   const iconPrefix = Platform.OS === 'web' ? 'android-' : '';
   return (
     <ListItem onPress={() => onPress(locationId)}>
-      <Text>{`${locationId}`}</Text>
+      <Left>
+        <Text>{`${locationId}`}</Text>
+      </Left>
       <Body>
         <View>
         <Text>{`lat: ${latitude}`}</Text>
