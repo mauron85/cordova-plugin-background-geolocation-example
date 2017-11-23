@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const config = {
   devtool: 'source-map',
   entry: {
-    bundle: ['./src/CordovaApp.js']
+    bundle: ['babel-polyfill', './src/CordovaApp.js']
   },
   output: {
     path: path.join(__dirname, 'www'),
