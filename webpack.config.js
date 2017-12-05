@@ -103,7 +103,7 @@ if (process.env.NODE_ENV === 'production') {
       parallel: true,
       sourceMap: true,
       compress: {
-        drop_console: true,
+        drop_console: false,
         warnings: false
       }
     })
