@@ -99,7 +99,7 @@ class PendingLocationsScene extends PureComponent {
     } else {
       Alert.alert(
         'Confirm action',
-        'Do you really want to delete all location?',
+        'Do you really want to delete all locations?',
         [
           {
             text: 'Yes',
@@ -129,7 +129,11 @@ class PendingLocationsScene extends PureComponent {
           <Body>
             <Title>Pending Locations</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={this.refresh}>
+              <Icon name="refresh" />
+            </Button>
+          </Right>
         </Header>
         <Content>
           {(() => {
