@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Alert, Dimensions, Text, Platform } from 'react-native';
 import {
   Container,
@@ -29,7 +29,19 @@ const styles = StyleSheet.create({
   }
 });
 
-class MainScene extends PureComponent {
+function logError(msg) {
+  console.log(`[ERROR]: ${msg}`);
+}
+
+function filterLocations(locations, maxAgeInMillis) {
+  const now = Date.now();
+
+  return locations.filter(location => {
+    return now - location.time <= maxAgeInMillis;
+  });
+}
+
+class MainScene extends Component {
   static navigationOptions = {
     title: 'Main',
     header: null
@@ -48,39 +60,34 @@ class MainScene extends PureComponent {
   }
 
   componentDidMount() {
-    console.log('map did mount');
+    console.log('Main did mount');
 
-    function logError(msg) {
-      console.log(`[ERROR] getLocations: ${msg}`);
-    }
+    BackgroundGeolocation.configure({
+      postTemplate: {
+        lat: '@latitude',
+        lon: '@longitude',
+        foo: 'bar'
+      }
+    });
 
-    const handleHistoricLocations = locations => {
+    BackgroundGeolocation.getLocations(locations => {
+      const locationsPastHour = filterLocations(locations, 3600 * 1000);
+
       let region = null;
-      const now = Date.now();
       const latitudeDelta = 0.01;
       const longitudeDelta = 0.01;
-      const durationOfDayInMillis = 24 * 3600 * 1000;
-
-      const locationsPast24Hours = locations.filter(location => {
-        return now - location.time <= durationOfDayInMillis;
-      });
-
-      if (locationsPast24Hours.length > 0) {
+    
+      if (locationsPastHour.length > 0) {
         // asume locations are already sorted
-        const lastLocation =
-          locationsPast24Hours[locationsPast24Hours.length - 1];
+        const lastLocation = locationsPastHour[locationsPastHour.length - 1];
         region = Object.assign({}, lastLocation, {
           latitudeDelta,
           longitudeDelta
         });
       }
-      this.setState({ locations: locationsPast24Hours, region });
-    };
-
-    BackgroundGeolocation.getValidLocations(
-      handleHistoricLocations.bind(this),
-      logError
-    );
+    
+      this.setState({ locations: locationsPastHour, region });
+    }, logError);
 
     BackgroundGeolocation.on('start', () => {
       // service started successfully
@@ -128,39 +135,33 @@ class MainScene extends PureComponent {
         requestAnimationFrame(() => {
           const longitudeDelta = 0.01;
           const latitudeDelta = 0.01;
-          if (location.radius) {
-            const region = Object.assign({}, location, {
-              latitudeDelta,
-              longitudeDelta
-            });
-            const stationaries = this.state.stationaries.slice(0);
-            stationaries.push(location);
-            this.setState({ stationaries, region });
-          } else {
-            const region = Object.assign({}, location, {
-              latitudeDelta,
-              longitudeDelta
-            });
-            const locations = this.state.locations.slice(0);
-            locations.push(location);
-            this.setState({ locations, region });
-          }
+          const region = Object.assign({}, location, {
+            latitudeDelta,
+            longitudeDelta
+          });
+          const locations = this.state.locations;
+          locations.push(location);
+          this.setState({ locations, region });
           BackgroundGeolocation.endTask(taskKey);
         });
       });
     });
 
-    // BackgroundGeolocation.on('stationary', (stationary) => {
-    //   console.log('[DEBUG] BackgroundGeolocation stationary', stationary);
-    //   BackgroundGeolocation.startTask(taskKey => {
-    //     requestAnimationFrame(() => {
-    //       const stationaries = this.state.stationaries.slice(0);
-    //       stationaries.push(stationary);
-    //       this.setState({ stationaries });
-    //       BackgroundGeolocation.endTask(taskKey);
-    //     });
-    //   });
-    // });
+    BackgroundGeolocation.on('stationary', (stationary) => {
+      console.log('[DEBUG] BackgroundGeolocation stationary', stationary);
+      BackgroundGeolocation.startTask(taskKey => {
+        requestAnimationFrame(() => {
+          const stationaries = this.state.stationaries;
+          stationaries.push(stationary);
+          this.setState({ stationaries });
+          BackgroundGeolocation.endTask(taskKey);
+        });
+      });
+    });
+
+    BackgroundGeolocation.on('activity', (activity) => {
+      console.log('[DEBUG] BackgroundGeolocation activity', activity);
+    });
 
     BackgroundGeolocation.on('foreground', () => {
       console.log('[INFO] App is in foreground');
