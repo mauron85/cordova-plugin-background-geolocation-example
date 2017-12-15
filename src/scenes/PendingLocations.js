@@ -27,37 +27,55 @@ const styles = StyleSheet.create({
   }
 });
 
-const LogItem = ({
-  id: locationId,
-  selected,
-  latitude,
-  longitude,
-  time,
-  onPress
-}) => {
-  const date = new Date(time);
-  const iconPrefix = Platform.OS === 'web' ? 'android-' : '';
-  return (
-    <ListItem onPress={() => onPress(locationId)}>
-      <Left>
-        <Text>{`${locationId}`}</Text>
-      </Left>
-      <Body>
-        <View>
-        <Text>{`lat: ${latitude}`}</Text>
-        <Text>{`lon: ${longitude}`}</Text>
-        <Text>{`time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</Text>
-        </View>
-      </Body>
-      <Right>
-        <Icon
-          style={styles.iconStyle}
-          name={selected ? `${iconPrefix}radio-button-on` : `${iconPrefix}radio-button-off`}
-        />
-      </Right>
-    </ListItem>
-  );
-};
+class LogItem extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSelected: false,
+    };
+    this.onPress = this.onPress.bind(this);
+  }
+
+  onPress() {
+    this.setState({ isSelected: !this.state.isSelected });
+    this.props.onSelected(this.props.id);
+  }
+
+  render() {
+    const {
+      id,
+      latitude,
+      longitude,
+      time,
+      onPress
+    } = this.props;
+    const { isSelected } = this.state;
+  
+    const date = new Date(time);
+    const iconPrefix = Platform.OS === 'web' ? 'android-' : '';
+
+    return (
+      <ListItem onPress={this.onPress}>
+        <Left>
+          <Text>{`${id}`}</Text>
+        </Left>
+        <Body>
+          <View>
+          <Text>{`lat: ${latitude}`}</Text>
+          <Text>{`lon: ${longitude}`}</Text>
+          <Text>{`time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</Text>
+          </View>
+        </Body>
+        <Right>
+          <Icon
+            style={styles.iconStyle}
+            name={isSelected ? `${iconPrefix}radio-button-on` : `${iconPrefix}radio-button-off`}
+          />
+        </Right>
+      </ListItem>
+    );
+  }
+}
 
 class PendingLocationsScene extends PureComponent {
   static navigationOptions = {
@@ -67,10 +85,16 @@ class PendingLocationsScene extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = { locations: null, selectedLocationId: -1, isReady: false };
+    this.state = {
+      locations: [],
+      isReady: false,
+      selectedLocationsSet: new Set()
+    };
     this.onLocationSelected = this.onLocationSelected.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.refresh = this.refresh.bind(this);
+    this.deleteLocations = this.deleteLocations.bind(this);
+    this.deleteAllLocations = this.deleteAllLocations.bind(this);
   }
 
   componentDidMount() {
@@ -80,46 +104,84 @@ class PendingLocationsScene extends PureComponent {
   }
 
   refresh() {
-    this.setState({ selectedLocationId: -1, isReady: false });
+    this.setState({ isReady: false });
     BackgroundGeolocation.getValidLocations(locations => {
-      this.setState({ locations, isReady: true });
+      this.setState({
+        locations,
+        isReady: true,
+        selectedLocationsSet: new Set(),
+      });
+    });
+  }
+
+  deleteAllLocations() {
+    BackgroundGeolocation.deleteAllLocations(this.refresh);
+  }
+
+  deleteLocations(locationIdArray) {
+    this.setState({ isReady: false });
+    if (!Array.isArray(locationIdArray)) { return Promise.reject(); }
+
+    const tasks = locationIdArray.map(id => {
+      return new Promise((resolve, reject) => {
+        BackgroundGeolocation.deleteLocation(id, resolve, reject);
+      });
+    });
+
+    // https://decembersoft.com/posts/promises-in-serial-with-array-reduce/
+    return tasks.reduce((promiseChain, currentTask) => {
+        return promiseChain.then(chainResults =>
+            currentTask.then(currentResult =>
+                [ ...chainResults, currentResult ]
+            )
+        );
+    }, Promise.resolve([])).then(arrayOfResults => {
+        this.refresh();
     });
   }
 
   onLocationSelected(locationId) {
-    const selectedLocationId =
-      locationId !== this.state.selectedLocationId ? locationId : -1;
-    this.setState({ selectedLocationId });
+    console.log('[DEBUG] location selected', locationId);
+    const { selectedLocationsSet } = this.state;
+    if (selectedLocationsSet.has(locationId)) {
+      selectedLocationsSet.delete(locationId);
+    } else {
+      selectedLocationsSet.add(locationId);
+    }
   }
 
   onDelete() {
-    const { selectedLocationId } = this.state;
-    if (selectedLocationId > -1) {
-      BackgroundGeolocation.deleteLocation(selectedLocationId, this.refresh);
-    } else {
-      Alert.alert(
-        'Confirm action',
-        'Do you really want to delete all locations?',
-        [
-          {
-            text: 'Yes',
-            onPress: () =>
-              BackgroundGeolocation.deleteAllLocations(this.refresh)
-          },
-          {
-            text: 'No',
-            onPress: () => console.log('No Pressed'),
-            style: 'cancel'
+    const { selectedLocationsSet } = this.state;
+    const hasSelectedLocations = selectedLocationsSet.size > 0;
+
+    Alert.alert(
+      'Confirm action',
+      `Do you really want to delete ${hasSelectedLocations ? 'selected' : 'all'} locations?`,
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            if (hasSelectedLocations) {
+              this.deleteLocations([...selectedLocationsSet]);
+            } else {
+              this.deleteAllLocations();
+            }
           }
-        ]
-      );
-    }
+        },
+        {
+          text: 'No',
+          onPress: () => console.log('No Pressed'),
+          style: 'cancel'
+        }
+      ]
+    );
   }
 
   _keyExtractor = (item, index) => item.id;
 
   render() {
-    const { selectedLocationId, locations, isReady } = this.state;
+    console.log('[DEBUG] rendering PendingLocations');
+    const { locations, isReady } = this.state;
     return (
       <Container>
         <Header>
@@ -147,12 +209,10 @@ class PendingLocationsScene extends PureComponent {
                   keyExtractor={this._keyExtractor}
                   renderItem={({ item }) => {
                     const date = new Date(item.time);
-                    const selected = selectedLocationId === item.id;
                     return (
                       <LogItem
                         {...item}
-                        selected={selected}
-                        onPress={this.onLocationSelected}
+                        onSelected={this.onLocationSelected}
                       />
                     );
                   }}
@@ -164,9 +224,7 @@ class PendingLocationsScene extends PureComponent {
         <Footer>
           <FooterTab>
             <Button onPress={this.onDelete}>
-              <Text>
-                {selectedLocationId > -1 ? 'Delete location' : 'Delete all'}
-              </Text>
+              <Text>Delete locations</Text>
             </Button>
           </FooterTab>
         </Footer>

@@ -55,6 +55,12 @@ var mockState = {
   config: Object.assign({}, initialConfig),
 };
 
+var locations = [
+  { id: 1, latitude: 49.11937, longitude: 20.06275, time: INITIAL_TIME_IN_MILLIS },
+  { id: 2, latitude: 49.11792, longitude: 20.06741, time: INITIAL_TIME_IN_MILLIS + 10000 },
+  { id: 3, latitude: 49.11417, longitude: 20.06723, time: INITIAL_TIME_IN_MILLIS + 50000 },
+];
+
 var emptyFnc = function () { };
 
 function configure(options) {
@@ -72,11 +78,12 @@ function getConfig() {
 }
 
 function getLocations() {
-  return [
-    { id: 1, latitude: 49.11937, longitude: 20.06275, time: INITIAL_TIME_IN_MILLIS },
-    { id: 2, latitude: 49.11792, longitude: 20.06741, time: INITIAL_TIME_IN_MILLIS + 10000 },
-    { id: 3, latitude: 49.11417, longitude: 20.06723, time: INITIAL_TIME_IN_MILLIS + 50000 },
-  ]
+  return locations;
+}
+
+function deleteLocation(id) {
+  locations = locations.filter(l => l.id !== id);
+  return locations;
 }
 
 function getLogEntries(limit) {
@@ -153,6 +160,8 @@ var exec = function (success, failure, module, method, args) {
         return success(getLogEntries());
       }, 3000);
       return;
+    case 'deleteLocation':
+      return success(deleteLocation(args[0]));
     case 'startTask':
       return success(1);
     case 'endTask':
@@ -187,6 +196,7 @@ var BackgroundGeolocation = {
   events: [
     'location',
     'stationary',
+    'activity',
     'start',
     'stop',
     'error',
