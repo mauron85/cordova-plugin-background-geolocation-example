@@ -107,21 +107,23 @@ class MainScene extends Component {
         '[INFO] BackgroundGeolocation authorization status: ' + status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
-        Alert.alert(
-          'Location services are disabled',
-          'Would you like to open location settings?',
-          [
-            {
-              text: 'Yes',
-              onPress: () => BackgroundGeolocation.showLocationSettings()
-            },
-            {
-              text: 'No',
-              onPress: () => console.log('No Pressed'),
-              style: 'cancel'
-            }
-          ]
-        );
+        // we need to set delay after permission prompt or otherwise alert will not be shown
+        setTimeout(() =>
+          Alert.alert(
+            'App requires location tracking',
+            'Would you like to open app settings?',
+            [
+              {
+                text: 'Yes',
+                onPress: () => BackgroundGeolocation.showAppSettings()
+              },
+              {
+                text: 'No',
+                onPress: () => console.log('No Pressed'),
+                style: 'cancel'
+              }
+            ]
+        ), 1000);
       }
     });
 
@@ -187,17 +189,13 @@ class MainScene extends Component {
   }
 
   toggleTracking() {
-    BackgroundGeolocation.checkStatus(({ isRunning, authorization }) => {
+    BackgroundGeolocation.checkStatus(({ isRunning, locationServicesEnabled, authorization }) => {
       if (isRunning) {
         BackgroundGeolocation.stop();
         return false;
       }
-      if (authorization == BackgroundGeolocation.AUTHORIZED) {
-        // calling start will also ask user for permission if needed
-        // permission error will be handled in permisision_denied event
-        BackgroundGeolocation.start();
-      } else {
-        // Location services are disabled
+
+      if (!locationServicesEnabled) {
         Alert.alert(
           'Location services disabled',
           'Would you like to open location settings?',
@@ -210,6 +208,27 @@ class MainScene extends Component {
               text: 'No',
               onPress: () => console.log('No Pressed'),
               style: 'cancel'
+            }
+          ]
+        );
+        return false;
+      }
+
+      if (authorization == 99) {
+        // authorization yet to be determined
+        BackgroundGeolocation.start();
+      } else if (authorization == BackgroundGeolocation.AUTHORIZED) {
+        // calling start will also ask user for permission if needed
+        // permission error will be handled in permisision_denied event
+        BackgroundGeolocation.start();
+      } else {
+        Alert.alert(
+          'App requires location tracking',
+          'Please grant permission',
+          [
+            {
+              text: 'Ok',
+              onPress: () => BackgroundGeolocation.start()
             }
           ]
         );
