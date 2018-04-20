@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "displayName": "BG Example",
   "scripts": {
-    "clean": "rimraf www",
+    "clean": "rimraf www/*!\\(gitignore\\)",
     "copy": "cp-cli src/index.cordova.html www/index.html",
     "compile": "webpack --progress --config webpack.config.js",
     "build": "npm run clean && npm run copy && NODE_ENV=production npm run compile"
