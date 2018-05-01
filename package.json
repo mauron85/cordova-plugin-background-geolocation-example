@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "displayName": "BG Example",
   "scripts": {
-    "clean": "rimraf www/*!\\(gitignore\\)",
+    "clean": "rimraf www/*",
     "copy": "cp-cli src/index.cordova.html www/index.html",
     "compile": "webpack --progress --config webpack.config.js",
-    "build": "npm run clean && npm run copy && NODE_ENV=production npm run compile"
+    "build": "npm run clean && npm run copy && cross-env NODE_ENV=production npm run compile"
   },
   "dependencies": {
     "cordova-android": "^6.4.0",
@@ -26,6 +26,7 @@
     "babel-preset-react-native": "^4.0.0",
     "babel-preset-stage-2": "^6.24.1",
     "cp-cli": "^1.1.0",
+    "cross-env": "^5.1.4",
     "css-loader": "^0.28.7",
     "native-base-web": "git+https://github.com/mauron85/native-base-web.git#nativebase2.0",
     "prop-types": "^15.6.0",
