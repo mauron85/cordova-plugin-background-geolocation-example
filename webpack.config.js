@@ -1,7 +1,16 @@
 const os = require('os');
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+
+const paths = {
+  appSrc: resolveApp('src'),
+  appNodeModules: resolveApp('node_modules'),
+};
 
 const config = {
   devtool: 'source-map',
@@ -23,16 +32,10 @@ const config = {
       path.resolve(__dirname, 'node_modules')
     ],
     alias: {
-      // 'react': 'preact-compat',
-      // 'react-dom': 'preact-compat',
-      'native-base': 'native-base-web/index.js', // do not rely on pkg compiled rather compile ourself
-      'react-native': 'react-native-web/src/index.js', // do not rely on pkg compiled rather compile ourself
-      'react-native-vector-icons/Ionicons':
-        'native-base-web/src/Components/Widgets/Icon',
-      'react-native-maps': path.resolve(
-        __dirname,
-        'src', 'components', 'react-google-maps'
-      )
+      'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
+      'react-native': 'react-native-web',
+      // 'react-native-vector-icons/Ionicons': 'native-base-web/src/Components/Widgets/Icon',
+      'react-native-maps': path.resolve(__dirname, 'src', 'components', 'react-google-maps')
     }
   },
   resolveLoader: {
@@ -51,9 +54,20 @@ const config = {
       {
         test: /\.jsx?$/,
         include: [
-          path.join(__dirname, 'src'), // important for performance!
-          /native-base-web/, // we need to compile from sources because not installed from npm
-          /react-native-web/ // we need to compile from sources because not installed from npm
+          path.resolve(paths.appSrc), // important for performance!
+          path.resolve(paths.appNodeModules, 'native-base-shoutem-theme'),
+          path.resolve(paths.appNodeModules, 'react-navigation'),
+          path.resolve(paths.appNodeModules, 'react-native-easy-grid'),
+          path.resolve(paths.appNodeModules, 'react-native-drawer'),
+          path.resolve(paths.appNodeModules, 'react-native-safe-area-view'),
+          path.resolve(paths.appNodeModules, 'react-native-vector-icons'),
+          path.resolve(
+            paths.appNodeModules,
+            'react-native-keyboard-aware-scroll-view'
+          ),
+          path.resolve(paths.appNodeModules, 'react-native-web'),
+          path.resolve(paths.appNodeModules, 'react-native-tab-view'),
+          path.resolve(paths.appNodeModules, 'static-container')
         ],
         // exclude: /node_modules/,
         use: [
