@@ -19,7 +19,6 @@ const config = {
   },
   output: {
     path: path.join(__dirname, 'www'),
-    publicPath: 'www/',
     filename: 'app.js'
   },
   externals: {
@@ -33,9 +32,8 @@ const config = {
     ],
     alias: {
       'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-      'react-native': 'react-native-web',
-      // 'react-native-vector-icons/Ionicons': 'native-base-web/src/Components/Widgets/Icon',
-      'react-native-maps': path.resolve(__dirname, 'src', 'components', 'react-google-maps')
+      'react-native': path.resolve(__dirname, 'src', 'lib', 'react-native-web-extended'),
+      'react-native-maps': path.resolve(__dirname, 'src', 'lib', 'react-google-maps')
     }
   },
   resolveLoader: {
@@ -50,8 +48,7 @@ const config = {
     new webpack.optimize.ModuleConcatenationPlugin()
   ],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.jsx?$/,
         include: [
           path.resolve(paths.appSrc), // important for performance!
@@ -61,21 +58,20 @@ const config = {
           path.resolve(paths.appNodeModules, 'react-native-drawer'),
           path.resolve(paths.appNodeModules, 'react-native-safe-area-view'),
           path.resolve(paths.appNodeModules, 'react-native-vector-icons'),
-          path.resolve(
-            paths.appNodeModules,
-            'react-native-keyboard-aware-scroll-view'
-          ),
+          path.resolve(paths.appNodeModules, 'react-native-keyboard-aware-scroll-view'),
+          path.resolve(paths.appNodeModules, 'react-native-iphone-x-helper'),
           path.resolve(paths.appNodeModules, 'react-native-web'),
           path.resolve(paths.appNodeModules, 'react-native-tab-view'),
-          path.resolve(paths.appNodeModules, 'static-container')
+          path.resolve(paths.appNodeModules, 'static-container'),
+          path.resolve(paths.appNodeModules, 'color')
         ],
         // exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            query: { cacheDirectory: true }
+        use: [{
+          loader: 'babel-loader',
+          query: {
+            cacheDirectory: true
           }
-        ]
+        }]
       },
       {
         test: /\.css$/,

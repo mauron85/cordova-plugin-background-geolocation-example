@@ -16,6 +16,7 @@ import {
   Spinner
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackButton from '../components/BackButton';
 
 const STYLES = Object();
 STYLES['ERROR'] = { backgroundColor:'white',color:'red' };
@@ -54,6 +55,8 @@ class LogsScene extends PureComponent {
     this.rowLimit = 100;
     this.lastEventId = 0; // intentionally not set in state as it's asynchronnous
     this.refresh = this.refresh.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this._onEndReached = this._onEndReached.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +85,10 @@ class LogsScene extends PureComponent {
         logEntries: logEntries.concat(newLogEntries),
       });
     });
+  }
+
+  goBack() {
+    this.props.navigation.goBack();
   }
 
   _keyExtractor = (item, index) => item.id;
@@ -128,9 +135,7 @@ class LogsScene extends PureComponent {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-            </Button>
+            <BackButton onPress={this.goBack} />
           </Left>
           <Body>
             <Title>Logs</Title>

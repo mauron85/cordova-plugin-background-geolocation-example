@@ -54,6 +54,14 @@ class MenuScene extends PureComponent {
                 <Text>Plugin Logs</Text>
               </Body>
             </ListItem>
+            <ListItem icon onPress={() => this.navigate('AllLocations')}>
+              <Left>
+                <Icon name="plane" style={styles.iconStyle} />
+              </Left>
+              <Body>
+                <Text>All Locations</Text>
+              </Body>
+            </ListItem>
             <ListItem icon onPress={() => this.navigate('PendingLocations')}>
               <Left>
                 <Icon name="plane" style={styles.iconStyle} />

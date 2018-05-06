@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Slider as NativeSlider, View } from 'react-native';
+import { Modal, Slider as NativeSlider, View, StyleSheet } from 'react-native';
 import {
   Container,
   Header,
@@ -19,12 +19,12 @@ import { providers } from '../components/Config/Config.common';
 import { activities } from '../components/Config/Config.ios';
 import { i18n } from '../i18n';
 
-const styles = {
+const styles = StyleSheet.create({
   content: {
     padding: 10,
     backgroundColor: '#fff'
   }
-};
+});
 
 const configPropTypes = {
   desiredAccuracy: {
@@ -159,7 +159,7 @@ export default class EditConfigModal extends PureComponent {
         visible={visible}
         onRequestClose={() => {}}
       >
-        <Container style={styles.container}>
+        <Container>
           <Header>
             <Left>
               <BackButton onPress={() => onClose()} />

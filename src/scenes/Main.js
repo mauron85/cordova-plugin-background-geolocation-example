@@ -267,7 +267,7 @@ class MainScene extends Component {
                 <Icon name={isRunning ? 'pause' : 'play'} style={styles.icon} />
               </Button>
               <Button onPress={this.goToSettings}>
-                <Icon name={Platform.OS === 'web' ? 'android-menu' : 'menu'} style={styles.icon} />
+                <Icon name={'menu'} style={styles.icon} />
               </Button>
             </FooterTab>
           </Footer>

@@ -88,11 +88,11 @@ function deleteLocation(id) {
 
 function getLogEntries(limit) {
   return [
-    { level: 1, message: 'ERROR message', timestamp: 1510742914366 },
-    { level: 2, message: 'WARN message', timestamp: 1510742914367 },
-    { level: 4, message: 'INFO message', timestamp: 1510742914368 },
-    { level: 8, message: 'TRACE message', timestamp: 1510742914369 },
-    { level: 16, message: 'DEBUG message', timestamp: 1510742914370 }
+    { level: 'ERROR', message: 'ERROR message', timestamp: 1510742914366 },
+    { level: 'WARN', message: 'WARN message', timestamp: 1510742914367 },
+    { level: 'INFO', message: 'INFO message', timestamp: 1510742914368 },
+    { level: 'TRACE', message: 'TRACE message', timestamp: 1510742914369 },
+    { level: 'DEBUG', message: 'DEBUG message', timestamp: 1510742914370 }
   ];
 }
 
@@ -145,7 +145,7 @@ var exec = function (success, failure, module, method, args) {
       mockState.isRunning = false;
       return success(stop());
     case 'configure':
-      mockState.config = args[0];
+      mockState.config = Object.assign({}, mockState.config, args[0]);
       return success(true);
     case 'checkStatus':
       return success(checkStatus());
@@ -328,11 +328,11 @@ var BackgroundGeolocation = {
       'deleteAllLocations', []);
   },
 
-  getLogEntries: function (limit, success, failure) {
-    exec(success || emptyFnc,
-      failure || emptyFnc,
+  getLogEntries: function (limit, offset = 0, minLevel = "DEBUG", successFn = emptyFnc, errorFn = emptyFnc) {
+    exec(successFn,
+      emptyFnc,
       'BackgroundGeolocation',
-      'getLogEntries', [limit]);
+      'getLogEntries', [limit, offset, minLevel]);
   },
 
   checkStatus: function(success, failure) {

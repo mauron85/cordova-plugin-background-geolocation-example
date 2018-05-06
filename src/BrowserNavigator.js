@@ -3,6 +3,7 @@ import { TabRouter, addNavigationHelpers, createNavigator } from 'react-navigati
 import MainScene from './scenes/Main';
 import MenuScene from './scenes/Menu';
 import LogsScene from './scenes/Logs';
+import AllLocationsScene from './scenes/AllLocations';
 import PendingLocationsScene from './scenes/PendingLocations';
 import ConfigScene from './scenes/Config';
 
@@ -23,7 +24,8 @@ const Router = TabRouter({
     Main: { screen: MainScene, path: '' },
     Menu: { screen: MenuScene, path: 'menu' },
     Logs: { screen: LogsScene, path: 'logs' },
-    PendingLocations: { screen: PendingLocationsScene, path: 'locations' },
+    AllLocations: { screen: AllLocationsScene, path: 'alllocations' },
+    PendingLocations: { screen: PendingLocationsScene, path: 'pendinglocations' },
     Config: { screen: ConfigScene, path: 'config' }
 });
 

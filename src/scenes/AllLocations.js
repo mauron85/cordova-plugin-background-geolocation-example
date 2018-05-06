@@ -28,15 +28,13 @@ const styles = StyleSheet.create({
 
 const LogItem = ({
   id: locationId,
-  selected,
   latitude,
   longitude,
   time,
-  onPress
 }) => {
   const date = new Date(time);
   return (
-    <ListItem onPress={() => onPress(locationId)}>
+    <ListItem>
       <Text>{`${locationId}`}</Text>
       <Body>
         <View>
@@ -45,29 +43,20 @@ const LogItem = ({
         <Text>{`time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</Text>
         </View>
       </Body>
-      <Right>
-        <Icon
-          style={styles.iconStyle}
-          name={selected ? 'radio-button-on' : 'radio-button-off'}
-        />
-      </Right>
     </ListItem>
   );
 };
 
-class PendingLocationsScene extends PureComponent {
+class AllLocationsScene extends PureComponent {
   static navigationOptions = {
-    title: 'Pending Locations',
+    title: 'All Locations',
     header: null,
   };
 
   constructor(props) {
     super(props);
     this.state = { locations: null, selectedLocationId: -1, isReady: false };
-    this.onLocationSelected = this.onLocationSelected.bind(this);
-    this.onDelete = this.onDelete.bind(this);
     this.refresh = this.refresh.bind(this);
-    this.forceSync = this.forceSync.bind(this);
   }
 
   componentDidMount() {
@@ -76,61 +65,17 @@ class PendingLocationsScene extends PureComponent {
     });
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.syncTimeout);
-  }
-
   refresh() {
     this.setState({ selectedLocationId: -1, isReady: false });
-    BackgroundGeolocation.getValidLocations(locations => {
+    BackgroundGeolocation.getLocations(locations => {
       this.setState({ locations, isReady: true });
     });
-  }
-
-  forceSync() {
-    if (!this.syncTimeout) {
-      BackgroundGeolocation.forceSync();
-      this.syncTimeout = setTimeout(() => {
-        this.refresh();
-        this.syncTimeout = null;
-      }, 5000);
-    }
-  }
-
-  onLocationSelected(locationId) {
-    const selectedLocationId =
-      locationId !== this.state.selectedLocationId ? locationId : -1;
-    this.setState({ selectedLocationId });
-  }
-
-  onDelete() {
-    const { selectedLocationId } = this.state;
-    if (selectedLocationId > -1) {
-      BackgroundGeolocation.deleteLocation(selectedLocationId, this.refresh);
-    } else {
-      Alert.alert(
-        'Confirm action',
-        'Do you really want to delete all location?',
-        [
-          {
-            text: 'Yes',
-            onPress: () =>
-              BackgroundGeolocation.deleteAllLocations(this.refresh)
-          },
-          {
-            text: 'No',
-            onPress: () => console.log('No Pressed'),
-            style: 'cancel'
-          }
-        ]
-      );
-    }
   }
 
   _keyExtractor = (item, index) => item.id;
 
   render() {
-    const { selectedLocationId, locations, isReady } = this.state;
+    const { locations, isReady } = this.state;
     return (
       <Container>
         <Header>
@@ -138,7 +83,7 @@ class PendingLocationsScene extends PureComponent {
             <BackButton onPress={() => this.props.navigation.goBack()} />
           </Left>
           <Body>
-            <Title>Pending Locations</Title>
+            <Title>All Locations</Title>
           </Body>
           <Right>
             <Button transparent onPress={this.refresh}>
@@ -157,11 +102,9 @@ class PendingLocationsScene extends PureComponent {
                 keyExtractor={this._keyExtractor}
                 renderItem={({ item }) => {
                   const date = new Date(item.time);
-                  const selected = selectedLocationId === item.id;
                   return (
                     <LogItem
                       {...item}
-                      selected={selected}
                       onPress={this.onLocationSelected}
                     />
                   );
@@ -170,23 +113,9 @@ class PendingLocationsScene extends PureComponent {
             );
           })()}
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button danger onPress={this.onDelete}>
-              <Text>
-                {selectedLocationId > -1 ? 'Delete location' : 'Delete all'}
-              </Text>
-            </Button>
-            <Button onPress={this.forceSync}>
-              <Text>
-                Force sync
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }
 }
 
-export default PendingLocationsScene;
+export default AllLocationsScene;

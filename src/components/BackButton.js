@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
 import {
   Button,
   Icon,
@@ -7,7 +6,7 @@ import {
 
 const BackButton = props => (
   <Button transparent {...props}>
-    <Icon name={Platform.OS === 'web' ? 'android-arrow-back' : 'arrow-back'} />
+    <Icon name='arrow-back' />
   </Button>
 );
 
