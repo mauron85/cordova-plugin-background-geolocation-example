@@ -31,7 +31,6 @@ Replace platform with one of supported platforms: android, ios. In this example 
 
 ```
 cordova platform add android
-cordova plugin add cordova-plugin-mauron85-background-geolocation
 cordova build android
 ```
 
@@ -90,16 +89,6 @@ For development install and use webpack-dev-server:
 
 ```
 webpack-dev-server --content-base src/
-```
-
-## Plugin development
-
-All plugins will be installed from npm at their latest version. However if you want to install your local version on cordova-plugin-background-geolocation, you can do that:
-
-```
-cordova plugin rm cordova-plugin-mauron85-background-geolocation
-cordova plugin add file:///absolute_path_to_your/cordova-plugin-background-geolocation/
-cordova build
 ```
 
 ## Credits
