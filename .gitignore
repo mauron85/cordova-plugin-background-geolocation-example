@@ -12,4 +12,5 @@
 !package.json
 !README.md
 !webpack.config.js
+!yarn.lock
 /**/.DS_Store
