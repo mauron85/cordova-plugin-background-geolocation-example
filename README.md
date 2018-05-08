@@ -1,8 +1,7 @@
 Example Background Geolocation app.
 =============================================
 
-![MainUI](/appui.png)
-![Settings](/settings.png)
+![Screenshot](/screenshot.png)
 
 ## Description
 
