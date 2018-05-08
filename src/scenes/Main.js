@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Alert, Dimensions, Text, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, Alert, Dimensions, Text, Platform } from 'react-native';
 import {
   Container,
   Header,
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   footer: {
-    backgroundColor: '#0C68FB',
+    // backgroundColor: '#0C68FB',
   },
   icon: {
     color: '#fff',
@@ -50,7 +50,7 @@ class MainScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      region: null,
+      region: { latitude: -34.397, longitude: 150.644 },
       locations: [],
       stationaries: [],
       isRunning: false
@@ -73,10 +73,10 @@ class MainScene extends Component {
     BackgroundGeolocation.getLocations(locations => {
       const locationsPastHour = filterLocations(locations, 3600 * 1000);
 
-      let region = null;
+      let region = this.state.region;
       const latitudeDelta = 0.01;
       const longitudeDelta = 0.01;
-    
+
       if (locationsPastHour.length > 0) {
         // asume locations are already sorted
         const lastLocation = locationsPastHour[locationsPastHour.length - 1];
@@ -85,7 +85,7 @@ class MainScene extends Component {
           longitudeDelta
         });
       }
-    
+
       this.setState({ locations: locationsPastHour, region });
     }, logError);
 
@@ -241,8 +241,12 @@ class MainScene extends Component {
     const { locations, stationaries, region, isRunning } = this.state;
     return (
       <Container>
-        <Content>
-          <MapView style={{ width, height: height - 55 }} region={region}>
+        <View>
+          <MapView
+            style={{ width, height: height - 55 }}
+            region={region}
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+          >
             {locations.map((location, idx) => (
               <MapView.Marker
                 key={idx}
@@ -261,17 +265,17 @@ class MainScene extends Component {
               );
             })}
           </MapView>
-          <Footer style={styles.footer}>
-            <FooterTab>
-              <Button onPress={this.toggleTracking}>
-                <Icon name={isRunning ? 'pause' : 'play'} style={styles.icon} />
-              </Button>
-              <Button onPress={this.goToSettings}>
-                <Icon name={'menu'} style={styles.icon} />
-              </Button>
-            </FooterTab>
-          </Footer>
-        </Content>
+        </View>
+        <Footer style={styles.footer}>
+          <FooterTab>
+            <Button onPress={this.toggleTracking}>
+              <Icon name={isRunning ? 'pause' : 'play'} style={styles.icon} />
+            </Button>
+            <Button onPress={this.goToSettings}>
+              <Icon name={'menu'} style={styles.icon} />
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }

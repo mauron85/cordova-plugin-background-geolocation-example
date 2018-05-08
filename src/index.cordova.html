@@ -12,12 +12,13 @@
     <div id="root"></div>
     <script src="cordova.js"></script>
     <script>
+        var GOOGLE_MAPS_API_KEY='add your google maps api key here';
         function run() {
             var script = document.createElement('script');
             script.src = 'app.js'
             document['body'].appendChild(script);
         }
-        document.addEventListener('deviceready', run, false);        
+        document.addEventListener('deviceready', run, false);
     </script>
 </body>
 </html>

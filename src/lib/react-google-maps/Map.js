@@ -15,7 +15,7 @@ Map.propTypes = {
   region: PropTypes.shape({
     latitude: PropTypes.number,
     longitude: PropTypes.number
-  }),
+  }).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node

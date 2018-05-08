@@ -17,15 +17,21 @@ Example app shows some possibilities of [cordova-background-geolocation](https:/
 
 ## How to build
 
-Build app
+### Install dependencies
 
-```
-npm install
-npm run build
-```
+`npm install`
 
-App will be built into `www` folder.
+### Build application
 
+`npm run build`
+
+\* App will be built into `www` folder.
+
+### Add Google Maps API key
+
+Edit variable `GOOGLE_MAPS_API_KEY` in `www/index.html`
+
+### Build Cordova app
 
 Replace platform with one of supported platforms: android, ios. In this example we will build for Android.
 
@@ -90,10 +96,6 @@ For development install and use webpack-dev-server:
 ```
 webpack-dev-server --content-base src/
 ```
-
-## Credits
-
-* [transistorsoft](https://github.com/transistorsoft) for background-geolocation-console, cordova-background-geolocation and SampleApp.
 
 ### iOS quirks
 
