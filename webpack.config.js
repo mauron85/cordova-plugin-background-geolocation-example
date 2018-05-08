@@ -27,17 +27,18 @@ const config = {
   resolve: {
     extensions: ['.web.js', '.js', '.jsx', '.json'],
     modules: [
-      path.resolve(__dirname, 'src'),
-      path.resolve(__dirname, 'node_modules')
+      paths.appSrc,
+      paths.appNodeModules
     ],
     alias: {
       'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
       'react-native': path.resolve(__dirname, 'src', 'lib', 'react-native-web-extended'),
-      'react-native-maps': path.resolve(__dirname, 'src', 'lib', 'react-google-maps')
+      'react-native-maps': path.resolve(__dirname, 'src', 'lib', 'react-google-maps'),
+      'native-base': path.resolve(__dirname, 'src', 'lib', 'native-base-extended'),
     }
   },
   resolveLoader: {
-    modules: [path.join(__dirname, 'node_modules')]
+    modules: [paths.appNodeModules]
   },
   plugins: [
     new webpack.DefinePlugin({

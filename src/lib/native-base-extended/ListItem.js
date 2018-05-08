@@ -1,0 +1,84 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import {
+  TouchableHighlight,
+  Platform,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
+
+import { connectStyle } from "native-base-shoutem-theme";
+import mapPropsToStyleNames from "../../../node_modules/native-base/dist/src/utils/mapPropsToStyleNames";
+import variable from "../../../node_modules/native-base/dist/src/theme/variables/platform";
+
+class ListItem extends Component {
+  static contextTypes = {
+    theme: PropTypes.object
+  };
+  render() {
+    const variables = this.context.theme
+      ? this.context.theme["@@shoutem.theme/themeStyle"].variables
+      : variable;
+
+    if (
+      Platform.OS === "ios" ||
+      Platform.OS === "web" ||
+      variables.androidRipple === false ||
+      (!this.props.onPress && !this.props.onLongPress) ||
+      Platform.Version <= 21
+    ) {
+      return (
+        this.props.onPress ?
+          <TouchableHighlight
+            onPress={this.props.onPress}
+            onLongPress={this.props.onLongPress}
+            ref={c => (this._root = c)}
+            underlayColor={variables.listBtnUnderlayColor}
+            {...this.props}
+            style={undefined}
+          >
+            <View {...this.props}>{this.props.children}</View>
+          </TouchableHighlight>
+        :
+          <View
+            underlayColor={variables.listBtnUnderlayColor}
+            {...this.props}
+            style={undefined}
+          >
+            <View {...this.props}>{this.props.children}</View>
+          </View>
+      );
+    } else {
+      return (
+        <TouchableNativeFeedback
+          ref={c => (this._root = c)}
+          onPress={this.props.onPress}
+          onLongPress={this.props.onLongPress}
+        >
+          <View style={{ marginLeft: -17, paddingLeft: 17 }}>
+            <View {...this.props}>{this.props.children}</View>
+          </View>
+        </TouchableNativeFeedback>
+      );
+    }
+  }
+}
+
+ListItem.propTypes = {
+  ...TouchableHighlight.propTypes,
+  style: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.number,
+    PropTypes.array
+  ]),
+  itemDivider: PropTypes.bool,
+  button: PropTypes.bool
+};
+
+const StyledListItem = connectStyle(
+  "NativeBase.ListItem",
+  {},
+  mapPropsToStyleNames
+)(ListItem);
+
+export { StyledListItem as ListItem };
