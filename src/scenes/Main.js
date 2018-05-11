@@ -60,13 +60,11 @@ class MainScene extends Component {
   }
 
   componentDidMount() {
-    console.log('Main did mount');
-
     BackgroundGeolocation.configure({
       postTemplate: {
-        lat: '@latitude',
-        lon: '@longitude',
-        foo: 'bar'
+        latitude: '@latitude',
+        longitude: '@longitude',
+        time: '@time'
       }
     });
 
