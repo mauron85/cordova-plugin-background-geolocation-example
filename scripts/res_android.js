@@ -5,11 +5,13 @@
 //
 
 
+var drawableDir = 'platforms/android/app/src/main/res/drawable/';
+
 // configure all the files to copy.  Key of object is the source file, value is the destination location.  It's fine to put all platforms' icons and splash screen files here, even if we don't build for all platforms on each developer's box.
 var filestocopy = [
 // android
-{ "res/icons/mappointer_small.png": "platforms/android/res/drawable/mappointer_small.png" },
-{ "res/icons/mappointer_large.png": "platforms/android/res/drawable/mappointer_large.png" }
+{ "res/icons/mappointer_small.png": drawableDir + "mappointer_small.png" },
+{ "res/icons/mappointer_large.png": drawableDir + "mappointer_large.png" }
 ];
 
 var fs = require('fs');
@@ -18,8 +20,8 @@ var path = require('path');
 // no need to configure below
 var rootdir = '';//process.argv[2];
 
-if (!fs.existsSync("platforms/android/res/drawable")){
-    fs.mkdirSync("platforms/android/res/drawable");
+if (!fs.existsSync(drawableDir)){
+    fs.mkdirSync(drawableDir);
 }
 
 filestocopy.forEach(function(obj) {
