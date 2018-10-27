@@ -77,6 +77,10 @@ function getConfig() {
   return mockState.config;
 }
 
+function getCurrentLocation() {
+  return locations[0];
+}
+
 function getLocations() {
   return locations;
 }
@@ -155,6 +159,8 @@ var exec = function (success, failure, module, method, args) {
       return success(getLocations());
     case 'getValidLocations':
       return success(getLocations());
+    case 'getCurrentLocation':
+      return success(getCurrentLocation());
     case 'getLogEntries':
       setTimeout(function() {
         return success(getLogEntries());
@@ -267,6 +273,14 @@ var BackgroundGeolocation = {
       failure || emptyFnc,
       'BackgroundGeolocation',
       'getStationaryLocation', []);
+  },
+
+  getCurrentLocation: function (success, failure, options) {
+    options = options || {};
+    exec(success || emptyFnc,
+      failure || emptyFnc,
+      'BackgroundGeolocation',
+      'getCurrentLocation', [options.timeout, options.maximumAge, options.enableHighAccuracy]);
   },
 
   isLocationEnabled: function (success, failure) {

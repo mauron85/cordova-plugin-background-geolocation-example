@@ -68,24 +68,39 @@ class MainScene extends Component {
       }
     });
 
-    BackgroundGeolocation.getLocations(locations => {
-      const locationsPastHour = filterLocations(locations, 3600 * 1000);
+    // BackgroundGeolocation.getLocations(locations => {
+    //   const locationsPastHour = filterLocations(locations, 3600 * 1000);
 
+    //   let region = this.state.region;
+    //   const latitudeDelta = 0.01;
+    //   const longitudeDelta = 0.01;
+
+    //   if (locationsPastHour.length > 0) {
+    //     // asume locations are already sorted
+    //     const lastLocation = locationsPastHour[locationsPastHour.length - 1];
+    //     region = Object.assign({}, lastLocation, {
+    //       latitudeDelta,
+    //       longitudeDelta
+    //     });
+    //   }
+
+    //   this.setState({ locations: locationsPastHour, region });
+    // }, logError);
+
+    BackgroundGeolocation.getCurrentLocation(lastLocation => {
       let region = this.state.region;
       const latitudeDelta = 0.01;
       const longitudeDelta = 0.01;
-
-      if (locationsPastHour.length > 0) {
-        // asume locations are already sorted
-        const lastLocation = locationsPastHour[locationsPastHour.length - 1];
-        region = Object.assign({}, lastLocation, {
-          latitudeDelta,
-          longitudeDelta
-        });
-      }
-
-      this.setState({ locations: locationsPastHour, region });
-    }, logError);
+      region = Object.assign({}, lastLocation, {
+        latitudeDelta,
+        longitudeDelta
+      });
+      this.setState({ locations: [lastLocation], region });
+    }, (error) => {
+      setTimeout(() => {
+        Alert.alert('Error obtaining current location', JSON.stringify(error));
+      }, 100);
+    });
 
     BackgroundGeolocation.on('start', () => {
       // service started successfully
