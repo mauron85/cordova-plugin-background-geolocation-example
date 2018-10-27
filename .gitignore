@@ -13,4 +13,5 @@
 !README.md
 !webpack.config.js
 !yarn.lock
+!npm-shrinkwrap.json
 /**/.DS_Store
