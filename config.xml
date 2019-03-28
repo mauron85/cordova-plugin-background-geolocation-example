@@ -57,6 +57,6 @@
         <variable name="ACCOUNT_TYPE" value="$PACKAGE_NAME.account" />
         <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
     </plugin>
-    <engine name="ios" spec="^4.5.5" />
+    <engine name="ios" spec="^5.0.0" />
     <engine name="android" spec="^7.1.0" />
 </widget>
